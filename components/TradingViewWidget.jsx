@@ -41,11 +41,13 @@ function TradingViewWidget({ symbol }) {
   }, [symbol]);
 
   return (
-    <div
-      ref={container}
-      className="tradingview-widget-container"
-      style={{ height: '520px', width: '100%' }}
-    />
+    <div style={{ height: '2000px', width: '100%' }}>
+      <div
+        ref={container}
+        className="tradingview-widget-container"
+        style={{ height: '100%', width: '100%' }}
+      />
+    </div>
   );
 }
 
