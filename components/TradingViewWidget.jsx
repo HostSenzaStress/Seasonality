@@ -1,4 +1,3 @@
-jsx
 'use client';
 
 import { useEffect, useRef, memo } from 'react';
