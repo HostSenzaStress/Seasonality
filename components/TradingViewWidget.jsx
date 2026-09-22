@@ -41,7 +41,7 @@ function TradingViewWidget({ symbol }) {
   }, [symbol]);
 
   return (
-    <div style={{ height: '2000px', width: '100%' }}>
+    <div style={{ height: '900px', width: '100%' }}>
       <div
         ref={container}
         className="tradingview-widget-container"
