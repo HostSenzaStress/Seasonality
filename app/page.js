@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Search, Filter, TrendingUp, TrendingDown, ArrowUpRight, Info, RefreshCw, Sparkles } from 'lucide-react';
-import { OppositeCandleBadge } from '@/components/OppositeCandle';
+import { TRADE_STATES, TradeStateBadge, getTradeState } from '@/components/OppositeCandle';
 import { formatPct, formatDateItShort, statusColor, classeColor, formatNum } from '@/lib/format';
 
 function ScoreRing({ value }) {
@@ -54,15 +54,15 @@ function Progress({ value, status }) {
   );
 }
 
-function Card({ item, flagged }) {
+function Card({ item }) {
   const isUp = item.direzioneRaw === 'LONG';
-  const highlight = flagged;
+  const tradeState = getTradeState(item);
   return (
     <Link
       href={`/dettaglio/${encodeURIComponent(item.id)}`}
       className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
-        highlight
-          ? 'border-amber-300 shadow-amber-100/60 ring-2 ring-amber-200 hover:shadow-amber-200/40'
+        tradeState
+          ? TRADE_STATES[tradeState].card
           : 'border-violet-100 shadow-violet-100/40 hover:border-violet-200 hover:shadow-violet-200/40'
       }`}
     >
@@ -77,7 +77,7 @@ function Card({ item, flagged }) {
                   {item.classe}
                 </span>
               )}
-              {flagged && <OppositeCandleBadge />}
+              <TradeStateBadge state={tradeState} />
             </div>
             <div className="mt-0.5 flex items-center gap-2 text-xs text-slate-500">
               {isUp ? (
@@ -291,7 +291,7 @@ export default function HomePage() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((item) => (
-            <Card key={item.id} item={item} flagged={!!item.primaCandelaOpposta} />
+            <Card key={item.id} item={item} />
           ))}
         </div>
       )}
