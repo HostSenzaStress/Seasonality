@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, TrendingUp, TrendingDown, Info, Sparkles, LineChart } from 'lucide-react';
 import { formatPct, formatDateIt, statusColor, classeColor } from '@/lib/format';
 import TradingViewWidget from '@/components/TradingViewWidget';
+import { OppositeCandleSection } from '@/components/OppositeCandle';
 
 function BigScore({ value }) {
   const v = Math.max(0, Math.min(100, value ?? 0));
@@ -172,7 +173,9 @@ export default function DetailPage({ params }) {
           <MetricBig label="Drawdown massimo" value={formatPct(item.ddMax)} tone="bad" />
         </div>
       </section>
-
+                
+      <OppositeCandleSection item={item} />
+                
       <section>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-bold uppercase tracking-widest text-violet-700">
