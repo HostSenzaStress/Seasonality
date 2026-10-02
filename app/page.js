@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Search, Filter, TrendingUp, TrendingDown, ArrowUpRight, Info, RefreshCw, Sparkles } from 'lucide-react';
+import { OppositeCandleBadge } from '@/components/OppositeCandle';
 import { formatPct, formatDateItShort, statusColor, classeColor, formatNum } from '@/lib/format';
 
 function ScoreRing({ value }) {
@@ -53,12 +54,17 @@ function Progress({ value, status }) {
   );
 }
 
-function Card({ item }) {
+function Card({ item, flagged }) {
   const isUp = item.direzioneRaw === 'LONG';
+  const highlight = flagged;
   return (
     <Link
       href={`/dettaglio/${encodeURIComponent(item.id)}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-violet-100 bg-white p-5 shadow-sm shadow-violet-100/40 transition hover:-translate-y-0.5 hover:border-violet-200 hover:shadow-md hover:shadow-violet-200/40"
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+        highlight
+          ? 'border-amber-300 shadow-amber-100/60 ring-2 ring-amber-200 hover:shadow-amber-200/40'
+          : 'border-violet-100 shadow-violet-100/40 hover:border-violet-200 hover:shadow-violet-200/40'
+      }`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -71,6 +77,7 @@ function Card({ item }) {
                   {item.classe}
                 </span>
               )}
+              {flagged && <OppositeCandleBadge />}
             </div>
             <div className="mt-0.5 flex items-center gap-2 text-xs text-slate-500">
               {isUp ? (
@@ -143,7 +150,7 @@ export default function HomePage() {
   const [items, setItems] = useState(null);
   const [error, setError] = useState(null);
   const [q, setQ] = useState('');
-  const [statusFilter, setStatusFilter] = useState('TUTTI');
+  const [statusFilter, setStatusFilter] = useState('ATTIVA');
   const [classeFilter, setClasseFilter] = useState('TUTTE');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -284,7 +291,7 @@ export default function HomePage() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((item) => (
-            <Card key={item.id} item={item} />
+            <Card key={item.id} item={item} flagged={!!item.primaCandelaOpposta} />
           ))}
         </div>
       )}
