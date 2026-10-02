@@ -35,6 +35,8 @@ function TradingViewWidget({ symbol }) {
       hide_side_toolbar: false,
       withdateranges: true,
       calendar: false,
+      hide_volume: true, 
+      studies: [],         
       support_host: 'https://www.tradingview.com',
     });
     container.current.appendChild(script);
